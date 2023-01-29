@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <limits>
 using namespace std;
 
 const char LOGIN_INPUT[] = "login";
@@ -65,6 +66,9 @@ bool validateLoginCredentials(LoginData credentials) {
                 validCredentials = true;
                 break;
             }
+        } else {
+            cout << "ignoring until next new line" << endl;
+            fileStream.ignore(numeric_limits<streamsize>::max(), '\n');
         }
     }
     fileStream.close();
