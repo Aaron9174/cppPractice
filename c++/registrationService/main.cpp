@@ -6,6 +6,8 @@ using namespace std;
 const char LOGIN_INPUT[] = "login";
 const char NEW_INPUT[] = "new";
 const char EXIT_INPUT[] = "exit";
+const char CRED_FILENAME[] = "loginCredentials.txt";
+const string USERNAME_PASSWORD_DELIMITER = " ";
 
 string getUserInput() {
     string input;
@@ -17,7 +19,7 @@ void validateRegistrationInput(string input) {
     if (input == LOGIN_INPUT || input == NEW_INPUT || input == EXIT_INPUT) {
         return;
     } else {
-        throw std::invalid_argument("User must input is different than expected.");
+        throw invalid_argument("User must input is different than expected.");
     }
 }
 
@@ -45,13 +47,12 @@ LoginData getLoginCredentials() {
 
 bool validateLoginCredentials(LoginData credentials) {
     ifstream fileStream;
-    fileStream.open("loginCredentials.txt");
+    fileStream.open(CRED_FILENAME);
 
     bool validCredentials = false;
     while(true) {
         string storedUsername;
         fileStream >> storedUsername;
-        cout << "stored username: " << storedUsername << endl;
 
         if (storedUsername.length() == 0) {
             break;
@@ -70,6 +71,52 @@ bool validateLoginCredentials(LoginData credentials) {
     return validCredentials;
 }
 
+void validateNewUsernameEntry(string newUsername) {
+    ifstream fileStream;
+    fileStream.open(CRED_FILENAME);
+    while(true) {
+        string storedUsername;
+        fileStream >> storedUsername;
+
+        if (storedUsername.length() == 0) {
+            break;
+        }
+
+        if (storedUsername == newUsername) {
+            throw invalid_argument("Username already exists.");
+        }
+    }
+
+    fileStream.close();
+}
+
+void createAccount() {
+    bool enterUsernameState = true;
+    LoginData newCredentials;
+    while(enterUsernameState) {
+        cout << "Please type a username containing only letters and numbers." << endl;
+        newCredentials.username = getUserInput();
+        try {
+            validateNewUsernameEntry(newCredentials.username);
+            enterUsernameState = false;
+        } catch (invalid_argument const& ex) {
+            cout << ex.what() << endl;
+        }
+    }
+
+    cout << "Please type in your password." << endl;
+    newCredentials.password = getUserInput();
+
+    ofstream fileStream;
+    fileStream.open(CRED_FILENAME, ios::app);
+    cout << "writing" << newCredentials << " to file " << CRED_FILENAME << endl;
+    fileStream << newCredentials.username;
+    fileStream << " ";
+    fileStream << newCredentials.password;
+    fileStream << "\n";
+    fileStream.close();
+}
+
 void startRegistration() {
     string userInput = "";
     while (userInput != EXIT_INPUT) {
@@ -84,6 +131,8 @@ void startRegistration() {
                 cout << credentials << endl;
                 bool validCredentials = validateLoginCredentials(credentials);
                 cout << "Valid credentials: " << validCredentials << endl;
+            } else if (userInput == NEW_INPUT) {
+                createAccount();
             }
         } catch (std::invalid_argument& e) {
             cerr << e.what() << endl;
