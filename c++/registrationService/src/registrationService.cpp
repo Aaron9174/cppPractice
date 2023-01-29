@@ -6,8 +6,8 @@ using namespace std;
 
 const char LOGIN_INPUT[] = "login";
 const char NEW_INPUT[] = "new";
-const char EXIT_INPUT[] = "exit";
 const char CRED_FILENAME[] = "loginCredentials.txt";
+const char EXIT_INPUT[] = "exit";
 const string USERNAME_PASSWORD_DELIMITER = " ";
 
 string getUserInput() {
@@ -67,7 +67,6 @@ bool validateLoginCredentials(LoginData credentials) {
                 break;
             }
         } else {
-            cout << "ignoring until next new line" << endl;
             fileStream.ignore(numeric_limits<streamsize>::max(), '\n');
         }
     }
@@ -113,7 +112,6 @@ void createAccount() {
 
     ofstream fileStream;
     fileStream.open(CRED_FILENAME, ios::app);
-    cout << "writing" << newCredentials << " to file " << CRED_FILENAME << endl;
     fileStream << newCredentials.username;
     fileStream << " ";
     fileStream << newCredentials.password;
@@ -132,7 +130,6 @@ void startRegistration() {
             validateRegistrationInput(userInput);
             if (userInput == LOGIN_INPUT) {
                 LoginData credentials = getLoginCredentials();
-                cout << credentials << endl;
                 bool validCredentials = validateLoginCredentials(credentials);
                 
                 if (!validCredentials) {
