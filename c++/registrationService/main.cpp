@@ -130,7 +130,12 @@ void startRegistration() {
                 LoginData credentials = getLoginCredentials();
                 cout << credentials << endl;
                 bool validCredentials = validateLoginCredentials(credentials);
-                cout << "Valid credentials: " << validCredentials << endl;
+                
+                if (!validCredentials) {
+                    cerr << "Sorry, credentials not valid. Try again." << endl;
+                } else {
+                    cout << "Logged in!" << endl;
+                }
             } else if (userInput == NEW_INPUT) {
                 createAccount();
             }
