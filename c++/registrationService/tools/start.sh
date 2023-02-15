@@ -1,4 +1,2 @@
 #!/bin/bash
-cd ./build/
-./registrationService.o
-cd ./tools/
+./build/registrationService.o
