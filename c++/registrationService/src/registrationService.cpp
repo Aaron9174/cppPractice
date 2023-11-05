@@ -6,7 +6,7 @@ using namespace std;
 
 const char LOGIN_INPUT[] = "login";
 const char NEW_INPUT[] = "new";
-const char CRED_FILENAME[] = "loginCredentials.txt";
+const char CRED_FILENAME[] = "./data/loginCredentials.txt";
 const char EXIT_INPUT[] = "exit";
 const string USERNAME_PASSWORD_DELIMITER = " ";
 
