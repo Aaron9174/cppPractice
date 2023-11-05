@@ -52,6 +52,9 @@
  */
 
 #include <iostream>
+#include <map>
+#include <string>
+#include <vector>
 
 // Program defined constants
 // const std::string ADD_NUMBERS = "Aa";
@@ -60,127 +63,173 @@
 // const std::string DISPLAY_SMALLEST = "Ss";
 // const std::string PRINT_LIST = "Pp";
 // const std::string QUIT = "Qq";
-// const std::string VALID_MAIN_MENU_SELECTIONS = "AaLlMmSsPpQk";
+// const std::string VALID_MAIN_MENU_SELECTIONS = "AaLlMmSsPpQq";
 
-enum MenuSelections
+const std::string UNKNOWN_SELECTION = "Unknown selection, please try again";
+
+enum MenuSelection
 {
-    ADD_NUMBERS = "Aa",
-    DISPLAY_LARGEST = "Ll",
-    DISPLAY_MEAN = "Mm",
-    DISPLAY_SMALLEST = "Ss",
-    PRINT_LIST = "Pp",
-    QUIT = "Qq",
-    INVALID = "I",
+    ADD_NUMBERS = 0,
+    DISPLAY_LARGEST = 1,
+    DISPLAY_MEAN = 2,
+    DISPLAY_SMALLEST = 3,
+    PRINT_LIST = 4,
+    QUIT = 5,
+    INVALID = 6,
 };
 
-/***********************************************************************************************************/
-/***********************************************************************************************************/
-void displayMainMenu()
-{
-    std::string mainMenu = "P - Print numbers \n"
-                           "A - Add a number \n"
-                           "M - Display mean of the number \n"
-                           "S - Display the smallest number \n"
-                           "L - Display the largest number \n"
-                           "Q - Quit ";
-    std::cout << mainMenu << std::endl;
-}
+std::map<std::string, MenuSelection> MENU_SELECTION_MAP = {{"A", ADD_NUMBERS}, {"a", ADD_NUMBERS}, {"L", DISPLAY_LARGEST}, {"l", DISPLAY_LARGEST}, {"M", DISPLAY_MEAN}, {"m", DISPLAY_MEAN}, {"S", DISPLAY_SMALLEST}, {"s", DISPLAY_SMALLEST}, {"P", PRINT_LIST}, {"p", PRINT_LIST}, {"Q", QUIT}, {"q", QUIT}};
 
-/***********************************************************************************************************/
-/***********************************************************************************************************/
-MenuSelections getMainMenuSelection(std::string selection)
+class NumberList
 {
-    switch (selection)
+public:
+    /***********************************************************************************************************/
+    /***********************************************************************************************************/
+    int runListProgram()
     {
-    case to_underlying(MenuSelections::ADD_NUMBERS) == selection:
-        return MenuSelections::ADD_NUMBERS;
-    case to_underlying(MenuSelections::DISPLAY_LARGEST) == selection:
-        return MenuSelections::DISPLAY_LARGEST;
-    case to_underlying(MenuSelections::DISPLAY_MEAN) == selection:
-        return MenuSelections::DISPLAY_MEAN;
-    case to_underlying(MenuSelections::DISPLAY_SMALLEST) == selection:
-        return MenuSelections::DISPLAY_SMALLEST;
-    case to_underlying(MenuSelections::PRINT_LIST) == selection:
-        return MenuSelections::PRINT_LIST;
-    case to_underlying(MenuSelections::QUIT) == selection:
-        return MenuSelections::QUIT;
-    default:
-        std::cout << "Unknown selection, please try again" << std::endl;
-        return MenuSelections::INVALID;
-    }
-}
-
-/***********************************************************************************************************/
-/***********************************************************************************************************/
-std::string getRawUserSelection()
-{
-    std::cout << "Enter your choice: ";
-    std::string userSelection;
-    std::cin >> userSelection;
-    return userSelection;
-}
-
-/***********************************************************************************************************/
-/***********************************************************************************************************/
-bool handleQuit(MenuSelections selection)
-{
-    if (selection == MenuSelections::QUIT)
-    {
-        std::cout << "Goodbye" << std::endl;
-        return true;
-    }
-    return false;
-}
-
-/***********************************************************************************************************/
-/***********************************************************************************************************/
-void handleSelection(std::string menuSelection)
-{
-    switch (menuSelection)
-    {
-    case MenuSelections::ADD_NUMBERS:
-        break;
-    case MenuSelections::DISPLAY_LARGEST:
-        break;
-    case MenuSelections::DISPLAY_MEAN:
-        break;
-    case MenuSelections::DISPLAY_SMALLEST:
-        break;
-    case MenuSelections::PRINT_LIST:
-        break;
-    default:
-        std::cout << "Unknown selection, please try again" << std::endl;
-    }
-}
-
-/***********************************************************************************************************/
-/***********************************************************************************************************/
-int runListProgram()
-{
-
-    while (true)
-    {
-        displayMainMenu();
-
-        const std::string rawMenuSelection = getRawUserSelection();
-        const MenuSelections selection = getMainMenuSelection(rawMenuSelection);
-        if (selection == MenuSelections::INVALID)
+        NumberList numList;
+        while (true)
         {
-            continue;
+            displayMainMenu();
+
+            const std::string rawMenuSelection = getRawUserSelection();
+            const MenuSelection menuSelection = getMainMenuSelection(rawMenuSelection);
+
+            if (menuSelection == MenuSelection::INVALID)
+                continue;
+
+            handleSelection(menuSelection);
+
+            if (handleQuit(menuSelection))
+                break;
         }
 
-        if (handleQuit(menuSelection))
+        return 0;
+    }
+
+private:
+    /***********************************************************************************************************/
+    /***********************************************************************************************************/
+    void displayMainMenu()
+    {
+        std::string mainMenu = "P - Print numbers \n"
+                               "A - Add a number \n"
+                               "M - Display mean of the number \n"
+                               "S - Display the smallest number \n"
+                               "L - Display the largest number \n"
+                               "Q - Quit ";
+        std::cout << mainMenu << std::endl;
+    }
+
+    /***********************************************************************************************************/
+    /***********************************************************************************************************/
+    MenuSelection getMainMenuSelection(std::string selection)
+    {
+        if (MENU_SELECTION_MAP.find(selection) == MENU_SELECTION_MAP.end())
         {
+            std::cout << UNKNOWN_SELECTION << std::endl;
+            return MenuSelection::INVALID;
+        }
+        return MENU_SELECTION_MAP[selection];
+    }
+
+    /***********************************************************************************************************/
+    /***********************************************************************************************************/
+    std::string getRawUserSelection()
+    {
+        std::cout << "Enter your choice: ";
+        std::string userSelection;
+        std::cin >> userSelection;
+        return userSelection;
+    }
+
+    /***********************************************************************************************************/
+    /***********************************************************************************************************/
+    bool handleQuit(MenuSelection selection)
+    {
+        if (selection == MenuSelection::QUIT)
+        {
+            std::cout << "Goodbye" << std::endl;
+            return true;
+        }
+        return false;
+    }
+
+    /***********************************************************************************************************/
+    /***********************************************************************************************************/
+    int getNumberInput()
+    {
+        std::cout << "Input a number to add to the list: " << std::endl;
+        int numSelection;
+        std::cin >> numSelection;
+        return numSelection;
+    }
+
+    /***********************************************************************************************************/
+    /***********************************************************************************************************/
+    void addNumberToList(int numSelection)
+    {
+        if (std::cin.good())
+        {
+            _list.push_back(numSelection);
+            std::cout << numSelection << " added" << std::endl;
+        }
+        else
+        {
+            std::cin.clear();
+            std::cout << UNKNOWN_SELECTION << std::endl;
+        }
+    }
+
+    /***********************************************************************************************************/
+    /***********************************************************************************************************/
+    void printList()
+    {
+        if (_list.size() == 0)
+            std::cout << "[] - the list is empty" << std::endl;
+
+        std::cout << "[";
+        for (auto it = _list.begin(); it != _list.end(); ++it)
+        {
+            if (std::distance(it, _list.end()) != 1)
+                std::cout << *it << " ";
+            else
+                std::cout << *it;
+        }
+        std::cout << "]" << std::endl;
+    }
+
+    /***********************************************************************************************************/
+    /***********************************************************************************************************/
+    void handleSelection(MenuSelection selection)
+    {
+        switch (selection)
+        {
+        case MenuSelection::ADD_NUMBERS:
+            addNumberToList(getNumberInput());
             break;
+        case MenuSelection::DISPLAY_LARGEST:
+            break;
+        case MenuSelection::DISPLAY_MEAN:
+            break;
+        case MenuSelection::DISPLAY_SMALLEST:
+            break;
+        case MenuSelection::PRINT_LIST:
+            printList();
+            break;
+        default:
+            std::cout << UNKNOWN_SELECTION << std::endl;
         }
     }
 
-    return 0;
-}
+    /// The list of numbers
+    std::vector<int> _list;
+};
 
 /***********************************************************************************************************/
 /***********************************************************************************************************/
 int main()
 {
-    return runListProgram();
+    NumberList numList;
+    return numList.runListProgram();
 }
