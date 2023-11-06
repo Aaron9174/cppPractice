@@ -55,15 +55,8 @@
 #include <map>
 #include <string>
 #include <vector>
-
-// Program defined constants
-// const std::string ADD_NUMBERS = "Aa";
-// const std::string DISPLAY_LARGEST = "Ll";
-// const std::string DISPLAY_MEAN = "Mm";
-// const std::string DISPLAY_SMALLEST = "Ss";
-// const std::string PRINT_LIST = "Pp";
-// const std::string QUIT = "Qq";
-// const std::string VALID_MAIN_MENU_SELECTIONS = "AaLlMmSsPpQq";
+#include <bits/stdc++.h>
+#include <numeric>
 
 const std::string UNKNOWN_SELECTION = "Unknown selection, please try again";
 
@@ -183,10 +176,56 @@ private:
 
     /***********************************************************************************************************/
     /***********************************************************************************************************/
+    void displayLargest()
+    {
+        if (_list.size() == 0)
+        {
+            std::cout << "Unable to determine the largest number - list is empty" << std::endl;
+            return;
+        }
+
+        const int maxValue = *max_element(_list.begin(), _list.end());
+        std::cout << "The largest number is " << maxValue << std::endl;
+    }
+
+    /***********************************************************************************************************/
+    /***********************************************************************************************************/
+    void displayMean()
+    {
+        if (_list.size() == 0)
+        {
+            std::cout << "Unable to calculate mean - no data" << std::endl;
+            return;
+        }
+
+        const float count = static_cast<float>(_list.size());
+        const float mean = std::accumulate(_list.begin(), _list.end(), 0) / count;
+        std::cout << "The mean is " << mean << std::endl;
+    }
+
+    /***********************************************************************************************************/
+    /***********************************************************************************************************/
+    void displaySmallest()
+    {
+        if (_list.size() == 0)
+        {
+            std::cout << "Unable to determine the smallest number - list is empty" << std::endl;
+            return;
+        }
+
+        const int minValue = *min_element(_list.begin(), _list.end());
+        std::cout << "The smallest number is " << minValue << std::endl;
+    }
+
+    /***********************************************************************************************************/
+    /***********************************************************************************************************/
     void printList()
     {
         if (_list.size() == 0)
+        {
             std::cout << "[] - the list is empty" << std::endl;
+            return;
+        }
 
         std::cout << "[";
         for (auto it = _list.begin(); it != _list.end(); ++it)
@@ -209,14 +248,19 @@ private:
             addNumberToList(getNumberInput());
             break;
         case MenuSelection::DISPLAY_LARGEST:
+            displayLargest();
             break;
         case MenuSelection::DISPLAY_MEAN:
+            displayMean();
             break;
         case MenuSelection::DISPLAY_SMALLEST:
+            displaySmallest();
             break;
         case MenuSelection::PRINT_LIST:
             printList();
             break;
+        case MenuSelection::QUIT:
+            break; // Do nothing, handled elsewhere
         default:
             std::cout << UNKNOWN_SELECTION << std::endl;
         }
