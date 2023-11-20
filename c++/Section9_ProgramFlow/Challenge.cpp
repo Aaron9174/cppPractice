@@ -93,7 +93,8 @@ public:
 
             handleSelection(menuSelection);
 
-            if (handleQuit(menuSelection))
+            bool shouldQuit = handleQuit(menuSelection);
+            if (shouldQuit)
                 break;
         }
 
