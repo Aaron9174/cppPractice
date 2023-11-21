@@ -12,5 +12,10 @@ do
         o) output=${OPTARG};;
     esac
 done
-echo "output: $output";
-g++ $path -o $output;
+
+
+echo "Compiling..."
+if g++ $path -o $output
+then
+    echo "Successfully compiled. Output file is ./$output."
+fi
