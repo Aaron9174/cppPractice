@@ -1,1 +1,3 @@
 c++/**/*.out
+c++/**/output/*.exe
+c++/**/output/*.out
