@@ -80,15 +80,29 @@ int main()
     s18 += " Hebson";
     cout << "s18 addition output: " << s18 << endl; // Aaron Hebson
 
+    // TODO: investigate this section
     string s19;
-    cout << "Please enter: \"Aaron Hebson\"" << endl;
+    cout << "Please enter: \"Hello there\"" << endl;
     cin >> s19;                                                // User input: Hello there
     cout << "s19 extraction operator output: " << s19 << endl; // Only accepts up to the first white space!
-    cout << "Please enter: \"Aaron Hebson\"" << endl;
+    cout << "Please enter: \"Hello there\"" << endl;
     getline(cin, s19);                                      // User input: read entire line until \n
     cout << "s19 getline operator output: " << s19 << endl; // Hello there
-    cout << "Please enter: \"AaronxHebson\"" << endl;
+    cout << "Please enter: \"HelloxThere\"" << endl;
+    cin >> s19;             // User input: Hello there
     getline(cin, s19, 'x'); // User input: read until 'x' delimiter is hit
+
+    // Concatenation
+    string s20 = "Watermelon";
+    cout << "\nConcatenation"
+         << "\n-----------------------------------" << endl;
+    cout << "s20: " << s20 << endl; // Apple and Banana juice
+    s20 = s11 + " and " + s12 + " juice";
+    cout << "s20 is now: " << s20 << endl; // Apple and Banana juice
+    // s20 = "nice" + " cold" + s11 + "juice" // Compiler error due to string literals
+
+    // for loop through string
+    // s1 = "Apple";
 
     return 0;
 };
