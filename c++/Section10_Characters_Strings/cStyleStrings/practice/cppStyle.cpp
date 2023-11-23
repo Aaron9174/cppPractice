@@ -80,17 +80,16 @@ int main()
     s18 += " Hebson";
     cout << "s18 addition output: " << s18 << endl; // Aaron Hebson
 
-    // TODO: investigate this section
     string s19;
-    cout << "Please enter: \"Hello there\"" << endl;
+    cout << "Please enter: \"Hello there\"" << endl;           // NOTE: The whitespace will cause the following input to not work correctly
     cin >> s19;                                                // User input: Hello there
     cout << "s19 extraction operator output: " << s19 << endl; // Only accepts up to the first white space!
     cout << "Please enter: \"Hello there\"" << endl;
     getline(cin, s19);                                      // User input: read entire line until \n
     cout << "s19 getline operator output: " << s19 << endl; // Hello there
     cout << "Please enter: \"HelloxThere\"" << endl;
-    cin >> s19;             // User input: Hello there
     getline(cin, s19, 'x'); // User input: read until 'x' delimiter is hit
+    cout << "s19 getline delimiter operator: " << s19 << endl;
 
     // Concatenation
     string s20 = "Watermelon";
